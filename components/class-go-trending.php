@@ -121,17 +121,27 @@ class GO_Trending
 		$url = 'http://api.chartbeat.com/live/toppages/v3/';
 		$url = add_query_arg( $args, $url );
 
+		$data = NULL;
+
 		// fetch content from chartbeat
-		$response = wp_remote_get( $url );
-
-		// if the wp_remote_get failed, return a json error
-		if ( is_wp_error( $response ) )
+		if ( function_exists( 'wpcom_vip_file_get_contents' ) )
 		{
-			wp_send_json_error();
+			$data = wpcom_vip_file_get_contents( $url, 1, MINUTE_IN_SECONDS * 5 );
 		}//end if
+		else
+		{
+			$response = wp_remote_get( $url );
 
-		// parse the data
-		$data = json_decode( $response['body'] );
+			// if the wp_remote_get failed, return a json error
+			if ( is_wp_error( $response ) )
+			{
+				wp_send_json_error();
+			}//end if
+
+			$data = $response['body'];
+		}//end else
+
+		$data = json_decode( $data );
 
 		$massaged_data = array();
 
