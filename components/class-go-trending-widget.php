@@ -30,7 +30,7 @@ class GO_Trending_Widget extends WP_Widget
 			'go_trending',
 			array(
 				'endpoint' => home_url( 'go-trending/' . mktime( date( 'H' ), date( 'i' ), 0 ) . '/' ),
-				'chartbeat_api_key' => go_popular()->config( 'chartbeat_api_key' ),
+				'chartbeat_api_key' => go_trending()->config( 'chartbeat_api_key' ),
 			)
 		);
 		wp_enqueue_script( 'go-trending' );
