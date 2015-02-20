@@ -1,0 +1,134 @@
+.widget-go-trending {
+	background: transparent;
+	border-radius: 6px;
+	box-shadow: 3px 3px 10px 0px rgba(0, 0, 0, 0.0980392);
+	margin-bottom: 1.5rem;
+}
+
+.widget-go-trending > header {
+	background: #d7d7d7;
+	border-top-left-radius: 6px;
+	border-top-right-radius: 6px;
+	font-size: 1.5rem;
+	min-height: 3rem;
+	padding: .75rem 1rem .5rem 1.5rem;
+}
+
+.trending-post {
+	background: #fff;
+	border-bottom: 2px solid #f5f5f0;
+	clear: both;
+	font-size: 1rem;
+	line-height: 1.33;
+	min-height: 42px;
+	padding: .75rem 1rem .75rem 4.5rem;
+	position: relative;
+}
+
+.trending-post[data-rank="6"],
+.trending-post[data-rank="7"],
+.trending-post[data-rank="8"],
+.trending-post[data-rank="9"],
+.trending-post[data-rank="10"] {
+	display: none;
+}
+
+.trending-post[data-rank="5"] {
+	border-bottom-left-radius: 6px;
+	border-bottom-right-radius: 6px;
+	border-bottom: 0;
+}
+
+.trending-post .rank,
+.trending-post .trend,
+.trending-post .thumb {
+	display: block;
+	left: 0;
+	position: absolute;
+	top: 0;
+	width: 64px;
+}
+
+.trending-post .trend,
+.trending-post .thumb {
+	display: none;
+}
+
+.trending-post .trend,
+.trending-post .rank {
+	color: #ff6b00;
+	font-weight: bold;
+	padding: 1rem;
+	text-align: center;
+}
+
+.trending-post .rank a:hover,
+.trending-post .trend a:hover {
+	text-decoration: none;
+}
+
+.trending-post .rank a {
+	color: #ff6b00;
+	font-size: 1rem;
+}
+
+.trending-post .trend {
+	padding: 0;
+}
+
+.trending-post .trend a {
+	font-size: 2rem;
+}
+
+.trending-post .trend a .icon-chevron-up {
+	color: #009BFF;
+}
+
+.trending-post .trend a .icon-chevron-down {
+	color: #ECEBE6;
+}
+
+.trending-post a {
+	color: #2A2E33;
+	text-decoration: none;
+}
+
+.trending-post a:hover {
+	color: #000;
+	text-decoration: underline;
+}
+
+.widget-go-trending.show-trend .rank,
+.widget-go-trending.show-thumbnails .rank {
+	display: none;
+}
+
+.widget-go-trending.show-thumbnails .thumb {
+	display: block;
+}
+
+.widget-go-trending.show-thumbnails .trending-post {
+	height: 66px;
+}
+
+.widget-go-trending.show-thumbnails > header {
+	padding-left: 1rem;
+}
+
+.widget-go-trending.show-trend .trend {
+	display: block;
+}
+
+@media screen and (min-width: 960px) {
+	.widget-go-trending {
+		margin-right: .5rem;
+		position: absolute;
+		right: -.5rem;
+		top: 380px;
+		width: 300px;
+	}
+
+	.trending-post {
+		font-size: .8125rem;
+	}
+}
