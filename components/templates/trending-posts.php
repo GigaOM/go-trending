@@ -12,6 +12,7 @@
 			<a href="{{url}}"><img src="{{thumbnail}}" width="64" height="64"/></a>
 		</div>
 		<header>
+			<div class="subheader subdued channel">{{sections.primary_channel}}</div>
 			<a href="{{url}}">{{title}}</a>
 		</header>
 	</div>

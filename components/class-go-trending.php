@@ -211,7 +211,20 @@ class GO_Trending
 				'trend' => $trend,
 				'trend_direction' => $trend_direction,
 				'thumbnail' => esc_url( get_template_directory_uri() . '/img/logo-iphone.gigaom.png' ),
+				'sections' => array(),
 			);
+
+			foreach ( $item->sections as $section )
+			{
+				list( $key, $value ) = explode( ':', $section );
+
+				if ( ! isset( $post_data['sections'][ $key ] ) )
+				{
+					$post_data['sections'][ $key ] = array();
+				}//end if
+
+				$post_data['sections'][ $key ][] = html_entity_decode( $value );
+			}//end foreach
 
 			// attempt to fetch the post
 			$post = get_page_by_path( $path, OBJECT, 'post' );

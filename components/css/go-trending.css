@@ -62,12 +62,17 @@
 	text-align: center;
 }
 
+.trending-post .rank {
+	padding-top: .8rem;
+}
+
 .trending-post .rank a:hover,
 .trending-post .trend a:hover {
 	text-decoration: none;
 }
 
-.trending-post .rank a {
+.trending-post .rank a,
+.trending-post .rank a:hover {
 	color: #ff6b00;
 	font-size: 1rem;
 }
@@ -76,15 +81,21 @@
 	padding: 0;
 }
 
+.trending-post .channel {
+	display: none;
+}
+
 .trending-post .trend a {
 	font-size: 2rem;
 }
 
-.trending-post .trend a .icon-chevron-up {
+.trending-post .trend a .icon-chevron-up,
+.trending-post .trend a:hover .icon-chevron-up {
 	color: #009BFF;
 }
 
-.trending-post .trend a .icon-chevron-down {
+.trending-post .trend a .icon-chevron-down,
+.trending-post .trend a:hover .icon-chevron-down {
 	color: #ECEBE6;
 }
 
@@ -96,6 +107,11 @@
 .trending-post a:hover {
 	color: #000;
 	text-decoration: underline;
+}
+
+.trending-post .channel {
+	font-style: italic;
+	margin-bottom: 0;
 }
 
 .widget-go-trending.show-trend .rank,
@@ -119,6 +135,10 @@
 	display: block;
 }
 
+.widget-go-trending.show-channel .channel {
+	display: block;
+}
+
 @media screen and (min-width: 960px) {
 	.widget-go-trending {
 		margin-right: .5rem;
@@ -128,7 +148,8 @@
 		width: 300px;
 	}
 
-	.trending-post {
+	.trending-post,
+	.trending-post .channel {
 		font-size: .8125rem;
 	}
 }
