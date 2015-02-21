@@ -227,7 +227,14 @@ class GO_Trending
 			}//end foreach
 
 			// attempt to fetch the post
-			$post = get_page_by_path( $path, OBJECT, 'post' );
+			if ( function_exists( 'wpcom_vip_get_page_by_path' ) )
+			{
+				$post = wpcom_vip_get_page_by_path( $path, OBJECT, 'post' );
+			}//end if
+			else
+			{
+				$post = get_page_by_path( $path, OBJECT, 'post' );
+			}//end else
 
 			// if we can find a post by path and it has a thumbnail, use that instead
 			if ( $post && ! empty( $post->ID ) )
