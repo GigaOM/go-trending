@@ -148,15 +148,6 @@
 		width: 300px;
 	}
 
-	.paged .widget-go-trending {
-		top: 730px;
-	}
-
-	.tax-channel .widget-go-trending,
-	.tax-channel.paged .widget-go-trending {
-		top: 778px;
-	}
-
 	.trending-post,
 	.trending-post .channel {
 		font-size: .8125rem;
