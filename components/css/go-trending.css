@@ -144,12 +144,12 @@
 		margin-right: .5rem;
 		position: absolute;
 		right: -.5rem;
-		top: 380px;
+		top: 730px;
 		width: 300px;
 	}
 
-	.paged .widget-go-trending {
-		top: 730px;
+	.home:not(.paged) .widget-go-trending {
+		top: 380px;
 	}
 
 	.tax-channel .widget-go-trending,
