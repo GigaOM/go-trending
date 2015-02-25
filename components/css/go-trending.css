@@ -144,17 +144,8 @@
 		margin-right: .5rem;
 		position: absolute;
 		right: -.5rem;
-		top: 730px;
-		width: 300px;
-	}
-
-	.home:not(.paged) .widget-go-trending {
 		top: 380px;
-	}
-
-	.tax-channel .widget-go-trending,
-	.tax-channel.paged .widget-go-trending {
-		top: 778px;
+		width: 300px;
 	}
 
 	.trending-post,
