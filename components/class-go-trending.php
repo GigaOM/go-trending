@@ -106,8 +106,6 @@ class GO_Trending
 	 */
 	public function trending_posts_json()
 	{
-		header( 'Content-type: application/json' );
-
 		if ( $massaged_data = wp_cache_get( 'go-trending' ) )
 		{
 			wp_send_json_success( $massaged_data );
