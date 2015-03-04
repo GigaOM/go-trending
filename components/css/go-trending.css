@@ -81,10 +81,6 @@
 	padding: 0;
 }
 
-.trending-post .channel {
-	display: none;
-}
-
 .trending-post .trend a {
 	font-size: 2rem;
 }
@@ -135,8 +131,8 @@
 	display: block;
 }
 
-.widget-go-trending.show-channel .channel {
-	display: block;
+.widget-go-trending.hide-channel .channel {
+	display: none;
 }
 
 @media screen and (min-width: 960px) {
