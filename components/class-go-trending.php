@@ -185,14 +185,10 @@ class GO_Trending
 			$calc_d = $sum_x * $sum_x;
 
 			$trend = ( $calc_a - $calc_b ) / ( $calc_c - $calc_d );
-			if ( $trend < 0 )
-			{
-				$trend_direction = 'down';
-			}//end if
-			elseif ( $trend >= 0 && $trend <= 0.5 )
+			if ( $trend <= 0.5 )
 			{
 				$trend_direction = 'dash';
-			}//end elseif
+			}//end if
 			elseif ( $trend > 0.5 )
 			{
 				$trend_direction = 'up';
@@ -223,37 +219,6 @@ class GO_Trending
 
 				$post_data['sections'][ $key ][] = html_entity_decode( $value );
 			}//end foreach
-
-			// attempt to fetch the post
-			if ( function_exists( 'wpcom_vip_get_page_by_path' ) )
-			{
-				$post = wpcom_vip_get_page_by_path( $path, OBJECT, 'post' );
-			}//end if
-			else
-			{
-				$post = get_page_by_path( $path, OBJECT, 'post' );
-			}//end else
-
-			// if we can find a post by path and it has a thumbnail, use that instead
-			if ( $post && ! empty( $post->ID ) )
-			{
-				if ( has_post_thumbnail( $post->ID ) )
-				{
-					$thumbnail = get_the_post_thumbnail( $post->ID, 'small-square-thumbnail' );
-
-					preg_match( '!src="([^"]+)"!', $thumbnail, $matches );
-
-					$thumbnail = $matches[1];
-
-					// let's make sure old images are pointing at the correct location
-					$thumbnail = preg_replace( '!src="(https?)://pro\.!', 'src="$1://research.', $thumbnail );
-
-					// point at the correct uploads directory
-					$thumbnail = preg_replace( '!src="(https?)://research\.gigaom\.com/files/!', 'src="$1://research.gigaom.com/wp-content/uploads/', $thumbnail );
-
-					$post_data['thumbnail'] = $thumbnail;
-				}//end if
-			}//end if
 
 			$massaged_data[] = $post_data;
 			$rank++;
