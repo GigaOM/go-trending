@@ -11,7 +11,7 @@ class GO_Trending
 	{
 		add_action( 'init', array( $this, 'init' ) );
 		add_action( 'widgets_init', array( $this, 'widgets_init' ) );
-		if ( $this->admin())
+		if ( $this->admin() )
 		{
 			$this->admin();
 		}
