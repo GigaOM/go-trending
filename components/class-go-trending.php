@@ -160,7 +160,6 @@ class GO_Trending
 		$rank = 1;
 
 		$excluded_urls = get_option( 'go-trending-settings' );
-
 		foreach ( $data->pages as $item )
 		{
 			if ( 'gigaom.com/' === $item->path
@@ -216,7 +215,7 @@ class GO_Trending
 
 			// build the post
 			$post_data = array(
-				'url' => 'https://gigaom.com/' . $path,
+				'url' => 'https://gigaom.com' . $path,
 				'title' => preg_replace( '/ \| Gigaom$/', '', $item->title ),
 				'rank' => $rank,
 				'trend' => $trend,
