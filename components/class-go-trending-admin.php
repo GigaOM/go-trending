@@ -23,7 +23,6 @@ class GO_Trending_Admin
 		{
 			return;
 		}// end if
-
 		if (
 			   'POST' == $_SERVER['REQUEST_METHOD']
 			&& $this->slug . '-settings' == $_GET['page']
@@ -42,7 +41,7 @@ class GO_Trending_Admin
 				wp_nonce_field( plugin_basename( __FILE__ ), $this->slug . '-nonce' );
 				?>
 				<h3>Paste the URL to exclude it from the Trending Widget</h3>
-				<textarea cols="100" rows="15" name="go-trending-script" style="white-space: nowrap; overflow: auto;">
+				<textarea cols="100" rows="20" name="go-trending-script" style="white-space: nowrap; overflow: auto;">
 				<?php
 				foreach ( $this->settings as $url => $value )
 				{
@@ -82,9 +81,11 @@ class GO_Trending_Admin
 		$urls = explode( "\n", $script);
 		foreach ( $urls as $url )
 		{
+			$url = preg_replace( '/^https?:\/\//', '', $url );
 			$settings[ $url ] = $value;
 		}// end foreach
 		$this->settings = $settings;
+
 		return update_option( $this->slug . '-settings', $settings );
 	}//end update_settings
 }//end class

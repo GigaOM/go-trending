@@ -159,9 +159,13 @@ class GO_Trending
 		// start the first post at rank 1
 		$rank = 1;
 
+		$excluded_urls = get_option( 'go-trending-settings' );
+
 		foreach ( $data->pages as $item )
 		{
-			if ( 'gigaom.com/' === $item->path )
+			if ( 'gigaom.com/' === $item->path
+				|| in_array( $item->path, $excluded_urls )
+			)
 			{
 				continue;
 			}//end if
