@@ -78,7 +78,7 @@ class GO_Trending_Admin
 	private function update_settings( $script )
 	{
 		//$script = stripslashes( $script );
-		$urls = explode( "\n", $script);
+		$urls = explode( "\n", $script );
 		foreach ( $urls as $url )
 		{
 			$url = preg_replace( '#^https?://#', '', $url );
