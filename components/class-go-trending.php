@@ -11,11 +11,24 @@ class GO_Trending
 	{
 		add_action( 'init', array( $this, 'init' ) );
 		add_action( 'widgets_init', array( $this, 'widgets_init' ) );
+		if ( $this->admin())
+		{
+			$this->admin();
+		}
 
 		// hook to template_redirect so we can handle the endpoint
 		add_action( 'template_redirect', array( $this, 'template_redirect' ) );
 	}//end __construct
 
+	public function admin()
+	{
+		if ( ! $this->admin )
+		{
+			require_once __DIR__ . '/class-go-trending-admin.php';
+			$this->admin = new GO_Trending_Admin();
+		}// end if
+		return $this->admin;
+	} // END admin
 	/**
 	 * Hooked to the init action
 	 */
