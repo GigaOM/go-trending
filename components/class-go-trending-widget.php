@@ -1,6 +1,6 @@
 <?php
 
-class GO_Trending_Widget extends WP_Widget
+class GoTrendingWidget extends WP_Widget
 {
 	/**
 	 * Constructor
