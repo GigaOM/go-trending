@@ -26,7 +26,7 @@ class GoTrending
 	{
 		if ( ! $this->admin ){
 			require_once __DIR__ . '/class-go-trending-admin.php';
-			$this->admin = new GO_Trending_Admin();
+			$this->admin = new GoTrendingAdmin();
 		}
 
 		return $this->admin;

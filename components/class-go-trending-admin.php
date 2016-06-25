@@ -1,4 +1,5 @@
 <?php
+
 class GoTrendingAdmin
 {
 	private $name = 'Trending';
