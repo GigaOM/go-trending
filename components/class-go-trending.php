@@ -1,6 +1,6 @@
 <?php
 
-class GO_Trending
+class GoTrending
 {
 	private $config = NULL;
 
@@ -11,36 +11,42 @@ class GO_Trending
 	{
 		add_action( 'init', array( $this, 'init' ) );
 		add_action( 'widgets_init', array( $this, 'widgets_init' ) );
-		if ( $this->admin() )
-		{
+
+		if ( $this->admin() ){
 			$this->admin();
 		}
-
-		// hook to template_redirect so we can handle the endpoint
+		/**
+		 * hook to template_redirect so we can handle the endpoint
+		 * 
+		 */
 		add_action( 'template_redirect', array( $this, 'template_redirect' ) );
-	}//end __construct
+	}
 
 	public function admin()
 	{
-		if ( ! $this->admin )
-		{
+		if ( ! $this->admin ){
 			require_once __DIR__ . '/class-go-trending-admin.php';
-			$this->admin = new GO_Trending_Admin();
-		}// end if
+			$this->admin = new GoTrendingAdmin();
+		}
+
 		return $this->admin;
-	} // END admin
+	}
+
 	/**
 	 * Hooked to the init action
+	 * 
 	 */
 	public function init()
 	{
-		// create an endpoint
+		/**
+		 * create an endpoint
+		 * 
+		 */
 		add_rewrite_endpoint( 'go-trending', EP_ROOT );
 
-		if ( function_exists( 'go_ui' ) )
-		{
+		if ( function_exists( 'go_ui' ) ){
 			go_ui();
-		}//end if
+		}
 
 		$script_config = apply_filters( 'go_config', array( 'version' => 1 ), 'go-script-version' );
 		$js_min = ( defined( 'GO_DEV' ) && GO_DEV ) ? 'lib' : 'min';
@@ -50,7 +56,7 @@ class GO_Trending
 			plugins_url( "/js/{$js_min}/go-trending.js", __FILE__ ),
 			array(
 				'jquery',
-				'handlebars',
+				'handlebars'
 			),
 			$script_config['version'],
 			TRUE
@@ -62,31 +68,34 @@ class GO_Trending
 			array(),
 			$script_config['version']
 		);
-	}//end init
+	}
 
 	/**
 	 * Hooked to the template_redirect action
+	 * 
+	 * @return [type] [description]
 	 */
 	public function template_redirect()
 	{
 		global $wp_query;
 
-		if ( empty( $wp_query->query['go-trending'] ) )
-		{
+		if ( empty( $wp_query->query['go-trending'] ) ) {
 			return;
-		}//end if
+		}
 
 		$this->trending_posts_json();
-	}//end template_redirect
+	}
 
 	/**
 	 * Hooks into the widgets_init action to initialize plugin widgets
+	 * 
+	 * @return [type] [description]
 	 */
 	public function widgets_init()
 	{
 		require_once __DIR__ . '/class-go-trending-widget.php';
 		register_widget( 'GO_Trending_Widget' );
-	}//end widgets_init
+	}
 
 	/**
 	 * returns our current configuration, or a value in the configuration.
@@ -97,36 +106,37 @@ class GO_Trending
 	 */
 	public function config( $key = NULL )
 	{
-		if ( empty( $this->config ) )
-		{
+		if ( empty( $this->config ) ) {
 			$this->config = apply_filters(
 				'go_config',
 				array(),
 				'go-trending'
 			);
-		}//END if
+		}
 
-		if ( ! empty( $key ) )
-		{
-			return isset( $this->config[ $key ] ) ? $this->config[ $key ] : NULL ;
+		if ( ! empty( $key ) ) {
+			return isset( $this->config[ $key ] ) ? $this->config[ $key ] : NULL;
 		}
 
 		return $this->config;
-	}//END config
+	}
 
 	/**
 	 * Hooked to the trending_posts_ajax action
+	 *
+	 * 
+	 * @return [type] [description]
 	 */
 	public function trending_posts_json()
 	{
-		if ( $massaged_data = wp_cache_get( 'go-trending' ) )
-		{
+
+		if ( $massaged_data = wp_cache_get( 'go-trending' ) ) {
 			wp_send_json_success( $massaged_data );
-		}//end if
+		}
 
 		$args = array(
-			'apikey' => $this->config( 'chartbeat_api_key' ),
-			'host' => $this->config( 'chartbeat_host' ),
+			'apikey'	=> $this->config( 'chartbeat_api_key' ),
+			'host'		=> $this->config( 'chartbeat_host' ),
 		);
 
 		$url = 'http://api.chartbeat.com/live/toppages/v3/';
@@ -134,23 +144,21 @@ class GO_Trending
 
 		$data = NULL;
 
-		// fetch content from chartbeat
-		if ( function_exists( 'wpcom_vip_file_get_contents' ) )
-		{
+		/**
+		 * fetch content from chartbeat
+		 */
+		if ( function_exists( 'wpcom_vip_file_get_contents' ) ){
 			$data = wpcom_vip_file_get_contents( $url, 1, MINUTE_IN_SECONDS * 5 );
-		}//end if
-		else
-		{
+		}else{
 			$response = wp_remote_get( $url );
 
 			// if the wp_remote_get failed, return a json error
-			if ( is_wp_error( $response ) )
-			{
+			if ( is_wp_error( $response ) ){
 				wp_send_json_error();
-			}//end if
+			}
 
 			$data = $response['body'];
-		}//end else
+		}
 
 		$data = json_decode( $data );
 
@@ -162,12 +170,9 @@ class GO_Trending
 		$excluded_urls = get_option( 'go-trending-settings' );
 		foreach ( $data->pages as $item )
 		{
-			if ( 'gigaom.com/' === $item->path
-				|| in_array( $item->path, $excluded_urls )
-			)
-			{
+			if ('gigaom.com/' === $item->path || in_array( $item->path, $excluded_urls )){
 				continue;
-			}//end if
+			}
 
 			// formula for a trend line
 			// m = ( a - b ) / ( c - d )
@@ -176,12 +181,42 @@ class GO_Trending
 			// b = the sum of all x-values times the sum of all y-values
 			// c = n times the sum of all squared x-values
 			// d = the squared sum of all x-values
-
+			
+			/**
+			 * [$x description]
+			 * 
+			 * @var integer
+			 */
 			$x = 1;
+
+			/**
+			 * [$x_y_multiply description]
+			 * 
+			 * @var integer
+			 */
 			$x_y_multiply = 0;
+
+			/**
+			 * [$sum_x description]
+			 * 
+			 * @var integer
+			 */
 			$sum_x = 0;
+
+			/**
+			 * [$sum_y description]
+			 * 
+			 * @var integer
+			 */
 			$sum_y = 0;
+
+			/**
+			 * [$sum_squared_x description]
+			 * 
+			 * @var integer
+			 */
 			$sum_squared_x = 0;
+
 			foreach ( $item->stats->visit->hist as $hist )
 			{
 				$x_y_multiply += $x * $hist;
@@ -192,7 +227,7 @@ class GO_Trending
 				$sum_squared_x += ( $x * $x );
 
 				$x++;
-			}//end foreach
+			}
 
 			$num = count( $item->stats->visit->hist );
 			$calc_a = $x_y_multiply * $num;
@@ -201,19 +236,27 @@ class GO_Trending
 			$calc_d = $sum_x * $sum_x;
 
 			$trend = ( $calc_a - $calc_b ) / ( $calc_c - $calc_d );
-			if ( $trend <= 0.5 )
-			{
-				$trend_direction = 'dash';
-			}//end if
-			elseif ( $trend > 0.5 )
-			{
-				$trend_direction = 'up';
-			}//end elseif
 
-			// get the path of the post
+			if ( $trend <= 0.5 ){
+				$trend_direction = 'dash';
+			}
+
+			if ( $trend > 0.5 ){
+				$trend_direction = 'up';
+			}
+
+			/**
+			 * Get the path of the post
+			 * 
+			 * @var str
+			 */
 			$path = str_replace( 'gigaom.com/', '/', $item->path );
 
-			// build the post
+			/**
+			 * Build the post
+			 * 
+			 * @var array
+			 */
 			$post_data = array(
 				'url' => 'https://gigaom.com' . $path,
 				'title' => preg_replace( '/ \| Gigaom$/', '', $item->title ),
@@ -228,33 +271,36 @@ class GO_Trending
 			{
 				list( $key, $value ) = explode( ':', $section );
 
-				if ( ! isset( $post_data['sections'][ $key ] ) )
-				{
+				if ( ! isset( $post_data['sections'][ $key ] ) ){
 					$post_data['sections'][ $key ] = array();
-				}//end if
+				}
 
 				$post_data['sections'][ $key ][] = html_entity_decode( $value );
-			}//end foreach
+			}
 
 			$massaged_data[] = $post_data;
 			$rank++;
-		}//end foreach
+		}
 
-		// cache the data
+		/**
+		 * Cache the data
+		 */
 		wp_cache_set( 'go-trending', $massaged_data, '', MINUTE_IN_SECONDS * 5 );
 
 		wp_send_json_success( $massaged_data );
-	}//end trending_posts_json
-}//end class
+	}
+}
 
 function go_trending()
 {
+	/**
+	 * Instance
+	 */
 	global $go_trending;
 
-	if ( ! $go_trending )
-	{
-		$go_trending = new GO_Trending;
-	}//end if
+	if ( ! $go_trending ){
+		$go_trending = new GoTrending;
+	}
 
 	return $go_trending;
-}//end go_trending
+}

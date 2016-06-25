@@ -1,5 +1,6 @@
 <?php
-class GO_Trending_Admin
+
+class GoTrendingAdmin
 {
 	private $name = 'Trending';
 	private $slug = 'go-trending';
@@ -9,13 +10,13 @@ class GO_Trending_Admin
 	{
 		$this->settings = get_option( $this->slug . '-settings' );
 
-		add_action( 'admin_menu', array( $this, 'admin_menu' ) );
+		add_action( 'adminMenu', array( $this, 'adminMenu' ) );
 	}// end __construct
 
-	public function admin_menu()
+	public function adminMenu()
 	{
 		add_options_page( $this->name . ' Settings', $this->name . ' Settings', 'manage_options', $this->slug . '-settings', array( $this, 'settings' ) );
-	}// end admin_menu
+	}// end adminMenu
 
 	public function settings()
 	{
@@ -37,21 +38,26 @@ class GO_Trending_Admin
 		<div class="wrap">
 			<h2><?php echo esc_html( $this->name ); ?> Settings</h2>
 			<form method="post">
-				<?php
-				wp_nonce_field( plugin_basename( __FILE__ ), $this->slug . '-nonce' );
-				?>
+
+				<?php wp_nonce_field( plugin_basename( __FILE__ ), $this->slug . '-nonce' ); ?>
+
 				<h3>Paste the URL to exclude it from the Trending Widget</h3>
+
 				<textarea cols="100" rows="20" name="go-trending-script" style="white-space: nowrap; overflow: auto;">
-				<?php
-				foreach ( $this->settings as $url )
-				{
-					echo esc_html( $url ) . "\n";
-				}// end foreach
-				?>
+
+					<?php
+						foreach ( $this->settings as $url )
+						{
+							echo esc_html( $url ) . "\n";
+						}// end foreach
+					?>
+
 				</textarea>
+
 				<p class="submit">
 					<input type="submit" value="Submit" class="button-primary"/>
 				</p>
+
 			</form>
 			<?php
 
